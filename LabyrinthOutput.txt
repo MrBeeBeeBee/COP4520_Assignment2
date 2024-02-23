@@ -1,0 +1,2 @@
+All guests have gone through the labyrinth.
+Elapsed time: 32450 milliseconds
