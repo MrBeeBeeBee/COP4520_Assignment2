@@ -95,12 +95,12 @@ class Showroom
     }
 }
 
-class Guest implements Runnable
+class ShowroomGuest implements Runnable
 {
     private Showroom showroom;
     private int guestId;
 
-    public Guest(Showroom showroom, int guestId)
+    public ShowroomGuest(Showroom showroom, int guestId)
 	{
         this.showroom = showroom;
         this.guestId = guestId;
@@ -185,7 +185,7 @@ public class Assignment2b
 			{
                 e.printStackTrace();
             }
-            guestThreads[i] = new Thread(new Guest(showroom, guestId));
+            guestThreads[i] = new Thread(new ShowroomGuest(showroom, guestId));
             guestThreads[i].start();
         }
 

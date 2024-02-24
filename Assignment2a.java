@@ -89,13 +89,13 @@ class MinotaurLabyrinth
 	}
 }
 
-class Guest implements Runnable
+class LabyrinthGuest implements Runnable
 {
     private MinotaurLabyrinth labyrinth;
     private int guestId;
 	private boolean cupcakeEaten;
 
-    public Guest(MinotaurLabyrinth labyrinth, int guestId, boolean cupcakeEaten)
+    public LabyrinthGuest(MinotaurLabyrinth labyrinth, int guestId, boolean cupcakeEaten)
 	{
         this.labyrinth = labyrinth;
         this.guestId = guestId;
@@ -150,7 +150,7 @@ public class Assignment2a
             Collections.shuffle(guestIds);
             for (int guestId : guestIds) 
 			{
-                new Thread(new Guest(labyrinth, guestId, false)).start();
+                new Thread(new LabyrinthGuest(labyrinth, guestId, false)).start();
             }
         }
 
