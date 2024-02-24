@@ -1,0 +1,82 @@
+Benjamin Kuftic 
+COP 4520 Spring 2024
+
+Part 1
+
+My strategy for the first part of this assignment, regarding the minotaur and the labyrinth, was to initially figure out
+how a guest would know to declare they'd all been through the maze. Since they couldn't talk,
+the cupcake had to be the singular way a guest would know.
+
+I had tinkered around with a guest counting the number of times they either ate 
+or reordered the cupcake, but I ran into a problem where a guest could eat a cupcake twice
+and it would mess up another guest's count of the total number of unique reorders.
+
+Ultimately, I wrote the program such that one guest was designated as the Ordering Guest.
+Only the Ordering Guest can reorder a cupcake, and they only do so when they see no cupcake
+upon their arrival at the end of the labyrinth. The other guests were all Eating Guests.
+They would eat the first cupcake they saw on the pedestal, and never eat another cupcake.
+To this end, every time the Ordering Guest needed to order a new cupcake, they could be
+certain this was a unique instance of a guest eating a cupcake, and could make the announcement
+when they counted n-1 orders.
+
+I tried to make sure that guests could enter the labyrinth multiple times and in random order,
+and I think I succeeded to a certain degree.
+#####################################################################################################
+Part 2
+
+Strategy 1:
+	Advantages: Free Entry to All Guests At Any Time
+		Because each guest can check the showroom without waiting 
+		for others, each guest can enter the room far quicker and 
+		thus the party can end more swiftly.
+
+		This solution is also fairly easy to implement, as it has 
+		less contraints to focus on. 
+	Disadvantages:
+		The continuous checking of the storeroom's availability can 
+		be somewhat costly in regards to time and storage 
+
+		Without proper synchronization and locking of the storeroom, 
+		multiple threads might try to access the storeroom's information 
+		at the same time, leading to race conditions and the program 
+		potentially failing to operate.
+
+Strategy 2: Using An AVAILABLE and BUSY Sign
+	Advantages:
+		This strategy uses synchronization to lock and unlock the storeroom, 
+		ensuring that only one thread at a time can access the storeroom's information, 
+		causing no overlaps in access to occur and limiting the code's unpredictability.
+
+		Since each guest can only try to access the storeroom when it isn't locked, 
+		far less attempts to access the information occur, 
+		mitigating the risk of Strategy 1's continuous checking.
+	Disadvantages:
+		If a guest fails to release the lock upon leaving the storeroom, 
+		it's possible for a deadlock to occur and 
+		the party to come to a screeching halt.
+
+		The proper handling of locks can be difficult to implement due to 
+		it's increased complexity compared to the other strategies.
+
+
+Strategy 3: Forming a Queue to Enter
+	Advantages:
+		Using a queue induces order to the entry, ensuring only one guest
+		can be inside the storeroom at any time.
+
+		All guests are sure to be able to enter the storeroom
+	Disadvantages:
+		With an abundance of guests entering one at a time, the greater 
+		the number of guests, the longer it will take for guests 
+		near the end of the queue to be able to enter, drastically 
+		increasing the runtime.
+
+		Managing the queue requires some additional synchronization, potentially 
+		damaging the program's performance in high concurrency scenarios 
+		(a large number of guests at the party).
+
+After considering all three strategies, I went with the second strategy for my program. 
+My understanding is that strategy 1 would cause problems with variables being updated during processes, 
+and strategy 3 would be safe, but far too slow. To that end, I did my best to make it so
+a guest could only enter the storeroom if it was marked as AVAILABLE. If they found it marked BUSY,
+they would wait and walk around the party until the guest inside left and changed the sign.

@@ -1,2 +1,2 @@
-All guests have gone through the labyrinth.
-Elapsed time: 32450 milliseconds
+All guests have gone through the labyrinth, and the party ends.
+Total execution time: 25587 milliseconds
